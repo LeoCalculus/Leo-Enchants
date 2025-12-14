@@ -1,0 +1,24 @@
+{
+    "description": {
+        "translate": "enchantment.leo_enchants.grab"
+    },
+    "supported_items": "#minecraft:enchantable/fishing",
+    "primary_items": "#minecraft:enchantable/fishing",
+    "weight": 10,
+    "max_level": 1,
+    "min_cost": {
+        "base": 10,
+        "per_level_above_first": 0
+    },
+    "max_cost": {
+        "base": 40,
+        "per_level_above_first": 0
+    },
+    "anvil_cost": 4,
+    "slots": [
+        "mainhand"
+    ],
+    "exclusive_set": "#leo_enchants:grab_exclusive",
+    "effects": {}
+}
+

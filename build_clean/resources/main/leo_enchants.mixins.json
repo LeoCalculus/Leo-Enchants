@@ -1,0 +1,31 @@
+{
+    "required": true,
+    "package": "com.leo.enchants.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "AnvilScreenHandlerMixin",
+        "ArrowEntityMixin",
+        "BowItemMixin",
+        "CreeperEntityMixin",
+        "CreeperMissileDataMixin",
+        "EntityMixin",
+        "FishingBobberEntityMixin",
+        "FishingRodItemMixin",
+        "HeavyArrowMixin",
+        "LivingEntityMixin",
+        "PersistentProjectileEntityMixin",
+        "SkeletonEntityMixin",
+        "ZombieEntityMixin"
+    ],
+    "client": [
+        "client.CreeperEntityRendererMixin",
+        "client.CreeperEntityRendererUpdateStateMixin",
+        "client.CreeperEntityRenderStateMixin",
+        "client.ProjectileEntityRendererMixin",
+        "client.ProjectileEntityRendererUpdateStateMixin",
+        "client.ProjectileEntityRenderStateMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

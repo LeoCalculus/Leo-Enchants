@@ -1,0 +1,36 @@
+{
+    "description": {
+        "translate": "enchantment.leo_enchants.wither_impact"
+    },
+    "supported_items": "#minecraft:enchantable/sword",
+    "primary_items": "#minecraft:enchantable/sword",
+    "weight": 5,
+    "max_level": 3,
+    "min_cost": {
+        "base": 15,
+        "per_level_above_first": 10
+    },
+    "max_cost": {
+        "base": 45,
+        "per_level_above_first": 10
+    },
+    "anvil_cost": 4,
+    "slots": [
+        "mainhand"
+    ],
+    "effects": {
+        "minecraft:damage": [
+            {
+                "effect": {
+                    "type": "minecraft:add",
+                    "value": 0.0
+                },
+                "requirements": {
+                    "condition": "minecraft:entity_properties",
+                    "entity": "this",
+                    "predicate": {}
+                }
+            }
+        ]
+    }
+}

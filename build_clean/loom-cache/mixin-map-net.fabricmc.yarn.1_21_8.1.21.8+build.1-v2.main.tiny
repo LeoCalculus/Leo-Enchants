@@ -1,0 +1,3 @@
+v1	named	intermediary
+METHOD	com/leo/enchants/mixin/EntityMixin	(Lnet/minecraft/entity/EntityPose;)Lnet/minecraft/entity/EntityDimensions;	getDimensions	method_18377
+METHOD	com/leo/enchants/mixin/FishingBobberEntityMixin	()Lnet/minecraft/entity/player/PlayerEntity;	getPlayerOwner	method_6947

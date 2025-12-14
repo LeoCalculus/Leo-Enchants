@@ -1,0 +1,42 @@
+Compiled from "EntityAttributes.java"
+public class net.minecraft.entity.attribute.EntityAttributes {
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> ARMOR;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> ARMOR_TOUGHNESS;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> ATTACK_DAMAGE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> ATTACK_KNOCKBACK;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> ATTACK_SPEED;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> BLOCK_BREAK_SPEED;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> BLOCK_INTERACTION_RANGE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> BURNING_TIME;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> CAMERA_DISTANCE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> EXPLOSION_KNOCKBACK_RESISTANCE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> ENTITY_INTERACTION_RANGE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> FALL_DAMAGE_MULTIPLIER;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> FLYING_SPEED;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> FOLLOW_RANGE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> GRAVITY;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> JUMP_STRENGTH;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> KNOCKBACK_RESISTANCE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> LUCK;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> MAX_ABSORPTION;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> MAX_HEALTH;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> MINING_EFFICIENCY;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> MOVEMENT_EFFICIENCY;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> MOVEMENT_SPEED;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> OXYGEN_BONUS;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> SAFE_FALL_DISTANCE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> SCALE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> SNEAKING_SPEED;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> SPAWN_REINFORCEMENTS;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> STEP_HEIGHT;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> SUBMERGED_MINING_SPEED;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> SWEEPING_DAMAGE_RATIO;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> TEMPT_RANGE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> WATER_MOVEMENT_EFFICIENCY;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> WAYPOINT_TRANSMIT_RANGE;
+  public static final net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> WAYPOINT_RECEIVE_RANGE;
+  public net.minecraft.entity.attribute.EntityAttributes();
+  private static net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> register(java.lang.String, net.minecraft.entity.attribute.EntityAttribute);
+  public static net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.attribute.EntityAttribute> registerAndGetDefault(net.minecraft.registry.Registry<net.minecraft.entity.attribute.EntityAttribute>);
+  static {};
+}

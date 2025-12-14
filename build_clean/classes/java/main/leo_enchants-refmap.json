@@ -1,0 +1,116 @@
+{
+  "mappings": {
+    "com/leo/enchants/mixin/AnvilScreenHandlerMixin": {
+      "updateResult": "Lnet/minecraft/class_1706;method_24928()V"
+    },
+    "com/leo/enchants/mixin/ArrowEntityMixin": {
+      "onEntityHit": "Lnet/minecraft/class_1665;method_7454(Lnet/minecraft/class_3966;)V"
+    },
+    "com/leo/enchants/mixin/BowItemMixin": {
+      "onStoppedUsing": "Lnet/minecraft/class_1753;method_7840(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;I)Z"
+    },
+    "com/leo/enchants/mixin/CreeperEntityMixin": {
+      "initGoals": "Lnet/minecraft/class_1548;method_5959()V"
+    },
+    "com/leo/enchants/mixin/CreeperMissileDataMixin": {
+      "initDataTracker": "Lnet/minecraft/class_1548;method_5693(Lnet/minecraft/class_2945$class_9222;)V"
+    },
+    "com/leo/enchants/mixin/EntityMixin": {
+      "getDimensions": "Lnet/minecraft/class_1297;method_18377(Lnet/minecraft/class_4050;)Lnet/minecraft/class_4048;"
+    },
+    "com/leo/enchants/mixin/FishingBobberEntityMixin": {
+      "tick": "Lnet/minecraft/class_1536;method_5773()V",
+      "use": "Lnet/minecraft/class_1536;method_6957(Lnet/minecraft/class_1799;)I"
+    },
+    "com/leo/enchants/mixin/FishingRodItemMixin": {
+      "use": "Lnet/minecraft/class_1787;method_7836(Lnet/minecraft/class_1937;Lnet/minecraft/class_1657;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;"
+    },
+    "com/leo/enchants/mixin/HeavyArrowMixin": {
+      "initDataTracker": "Lnet/minecraft/class_1665;method_5693(Lnet/minecraft/class_2945$class_9222;)V",
+      "onEntityHit": "Lnet/minecraft/class_1665;method_7454(Lnet/minecraft/class_3966;)V",
+      "setVelocity(DDDFF)V": "Lnet/minecraft/class_1665;method_7485(DDDFF)V"
+    },
+    "com/leo/enchants/mixin/LivingEntityMixin": {
+      "getAttributeValue": "Lnet/minecraft/class_1309;method_45325(Lnet/minecraft/class_6880;)D"
+    },
+    "com/leo/enchants/mixin/PersistentProjectileEntityMixin": {
+      "initDataTracker": "Lnet/minecraft/class_1665;method_5693(Lnet/minecraft/class_2945$class_9222;)V"
+    },
+    "com/leo/enchants/mixin/SkeletonEntityMixin": {
+      "shootAt": "Lnet/minecraft/class_1547;method_7105(Lnet/minecraft/class_1309;F)V"
+    },
+    "com/leo/enchants/mixin/ZombieEntityMixin": {
+      "initGoals": "Lnet/minecraft/class_1642;method_5959()V"
+    },
+    "com/leo/enchants/mixin/client/CreeperEntityRendererMixin": {
+      "setupTransforms": "Lnet/minecraft/class_922;method_4058(Lnet/minecraft/class_10042;Lnet/minecraft/class_4587;FF)V"
+    },
+    "com/leo/enchants/mixin/client/CreeperEntityRendererUpdateStateMixin": {
+      "updateRenderState(Lnet/minecraft/entity/mob/CreeperEntity;Lnet/minecraft/client/render/entity/state/CreeperEntityRenderState;F)V": "Lnet/minecraft/class_887;method_62402(Lnet/minecraft/class_1548;Lnet/minecraft/class_10010;F)V"
+    },
+    "com/leo/enchants/mixin/client/ProjectileEntityRendererMixin": {
+      "render(Lnet/minecraft/client/render/entity/state/ProjectileEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V": "Lnet/minecraft/class_876;method_3875(Lnet/minecraft/class_9999;Lnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
+    },
+    "com/leo/enchants/mixin/client/ProjectileEntityRendererUpdateStateMixin": {
+      "updateRenderState(Lnet/minecraft/entity/projectile/PersistentProjectileEntity;Lnet/minecraft/client/render/entity/state/ProjectileEntityRenderState;F)V": "Lnet/minecraft/class_876;method_62377(Lnet/minecraft/class_1665;Lnet/minecraft/class_9999;F)V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "com/leo/enchants/mixin/AnvilScreenHandlerMixin": {
+        "updateResult": "Lnet/minecraft/class_1706;method_24928()V"
+      },
+      "com/leo/enchants/mixin/ArrowEntityMixin": {
+        "onEntityHit": "Lnet/minecraft/class_1665;method_7454(Lnet/minecraft/class_3966;)V"
+      },
+      "com/leo/enchants/mixin/BowItemMixin": {
+        "onStoppedUsing": "Lnet/minecraft/class_1753;method_7840(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;I)Z"
+      },
+      "com/leo/enchants/mixin/CreeperEntityMixin": {
+        "initGoals": "Lnet/minecraft/class_1548;method_5959()V"
+      },
+      "com/leo/enchants/mixin/CreeperMissileDataMixin": {
+        "initDataTracker": "Lnet/minecraft/class_1548;method_5693(Lnet/minecraft/class_2945$class_9222;)V"
+      },
+      "com/leo/enchants/mixin/EntityMixin": {
+        "getDimensions": "Lnet/minecraft/class_1297;method_18377(Lnet/minecraft/class_4050;)Lnet/minecraft/class_4048;"
+      },
+      "com/leo/enchants/mixin/FishingBobberEntityMixin": {
+        "tick": "Lnet/minecraft/class_1536;method_5773()V",
+        "use": "Lnet/minecraft/class_1536;method_6957(Lnet/minecraft/class_1799;)I"
+      },
+      "com/leo/enchants/mixin/FishingRodItemMixin": {
+        "use": "Lnet/minecraft/class_1787;method_7836(Lnet/minecraft/class_1937;Lnet/minecraft/class_1657;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;"
+      },
+      "com/leo/enchants/mixin/HeavyArrowMixin": {
+        "initDataTracker": "Lnet/minecraft/class_1665;method_5693(Lnet/minecraft/class_2945$class_9222;)V",
+        "onEntityHit": "Lnet/minecraft/class_1665;method_7454(Lnet/minecraft/class_3966;)V",
+        "setVelocity(DDDFF)V": "Lnet/minecraft/class_1665;method_7485(DDDFF)V"
+      },
+      "com/leo/enchants/mixin/LivingEntityMixin": {
+        "getAttributeValue": "Lnet/minecraft/class_1309;method_45325(Lnet/minecraft/class_6880;)D"
+      },
+      "com/leo/enchants/mixin/PersistentProjectileEntityMixin": {
+        "initDataTracker": "Lnet/minecraft/class_1665;method_5693(Lnet/minecraft/class_2945$class_9222;)V"
+      },
+      "com/leo/enchants/mixin/SkeletonEntityMixin": {
+        "shootAt": "Lnet/minecraft/class_1547;method_7105(Lnet/minecraft/class_1309;F)V"
+      },
+      "com/leo/enchants/mixin/ZombieEntityMixin": {
+        "initGoals": "Lnet/minecraft/class_1642;method_5959()V"
+      },
+      "com/leo/enchants/mixin/client/CreeperEntityRendererMixin": {
+        "setupTransforms": "Lnet/minecraft/class_922;method_4058(Lnet/minecraft/class_10042;Lnet/minecraft/class_4587;FF)V"
+      },
+      "com/leo/enchants/mixin/client/CreeperEntityRendererUpdateStateMixin": {
+        "updateRenderState(Lnet/minecraft/entity/mob/CreeperEntity;Lnet/minecraft/client/render/entity/state/CreeperEntityRenderState;F)V": "Lnet/minecraft/class_887;method_62402(Lnet/minecraft/class_1548;Lnet/minecraft/class_10010;F)V"
+      },
+      "com/leo/enchants/mixin/client/ProjectileEntityRendererMixin": {
+        "render(Lnet/minecraft/client/render/entity/state/ProjectileEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V": "Lnet/minecraft/class_876;method_3875(Lnet/minecraft/class_9999;Lnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
+      },
+      "com/leo/enchants/mixin/client/ProjectileEntityRendererUpdateStateMixin": {
+        "updateRenderState(Lnet/minecraft/entity/projectile/PersistentProjectileEntity;Lnet/minecraft/client/render/entity/state/ProjectileEntityRenderState;F)V": "Lnet/minecraft/class_876;method_62377(Lnet/minecraft/class_1665;Lnet/minecraft/class_9999;F)V"
+      }
+    }
+  }
+}
