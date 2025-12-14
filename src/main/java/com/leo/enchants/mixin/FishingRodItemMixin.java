@@ -30,13 +30,10 @@ public class FishingRodItemMixin {
 
     /**
      * After the fishing bobber is spawned, boost its velocity based on enchantment.
+     * This runs on BOTH client and server to ensure proper rendering sync.
      */
     @Inject(method = "use", at = @At("RETURN"))
     private void boostBobberVelocity(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<?> cir) {
-        if (world.isClient()) {
-            return;
-        }
-        
         ItemStack stack = user.getStackInHand(hand);
         if (stack.isEmpty()) {
             return;
@@ -51,7 +48,7 @@ public class FishingRodItemMixin {
         // Check for Hookshot enchantment first (higher priority)
         int hookshotLevel = getHookshotLevel(stack);
         if (hookshotLevel > 0) {
-            // Mark the bobber as a hookshot bobber
+            // Mark the bobber as a hookshot bobber (on both client and server)
             if (bobber instanceof HookshotBobberAccessor accessor) {
                 accessor.leo_enchants$setHookshotBobber(true);
             }
@@ -62,14 +59,22 @@ public class FishingRodItemMixin {
             double speed = 10.0; // Super fast, instant line speed
             
             // Set velocity directly to look direction (no random spread)
+            // Must be set on both client and server for proper rendering
             bobber.setVelocity(lookDirection.multiply(speed));
             
             // Disable gravity for straight line travel
             bobber.setNoGravity(true);
+            
+            // Mark velocity as modified to ensure sync
+            bobber.velocityModified = true;
             return;
         }
         
-        // Check for Grab enchantment
+        // Check for Grab enchantment (server only for durability handling)
+        if (world.isClient()) {
+            return;
+        }
+        
         int grabLevel = getGrabLevel(stack);
         if (grabLevel > 0) {
             Vec3d velocity = bobber.getVelocity();

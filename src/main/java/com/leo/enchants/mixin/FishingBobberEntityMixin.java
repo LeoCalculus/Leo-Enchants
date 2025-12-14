@@ -80,6 +80,7 @@ public abstract class FishingBobberEntityMixin implements HookshotBobberAccessor
 
     /**
      * Tick handler for hookshot range checking and block attachment.
+     * Runs on both client and server to ensure proper sync.
      */
     @Inject(method = "tick", at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
@@ -90,10 +91,12 @@ public abstract class FishingBobberEntityMixin implements HookshotBobberAccessor
             return;
         }
         
-        // Check range - if exceeded 30 blocks, discard the bobber
+        // Check range - if exceeded 30 blocks, discard the bobber (server only)
         double distance = bobber.getPos().distanceTo(player.getPos());
         if (distance > HOOKSHOT_MAX_RANGE && leo_enchants$attachedBlock == null) {
-            bobber.discard();
+            if (!bobber.getWorld().isClient()) {
+                bobber.discard();
+            }
             return;
         }
         
@@ -101,6 +104,12 @@ public abstract class FishingBobberEntityMixin implements HookshotBobberAccessor
         if (leo_enchants$attachedBlock == null) {
             Vec3d currentPos = bobber.getPos();
             Vec3d velocity = bobber.getVelocity();
+            
+            // Skip if velocity is zero (already stopped)
+            if (velocity.lengthSquared() < 0.001) {
+                return;
+            }
+            
             Vec3d nextPos = currentPos.add(velocity);
             
             // Raycast from current position to next position
@@ -115,14 +124,25 @@ public abstract class FishingBobberEntityMixin implements HookshotBobberAccessor
             if (hitResult.getType() == HitResult.Type.BLOCK) {
                 // Hit a block - attach and stop
                 leo_enchants$attachedBlock = hitResult.getBlockPos();
-                bobber.setPosition(hitResult.getPos());
+                
+                // Position bobber at the hit point, slightly back from surface to avoid z-fighting
+                Vec3d hitPos = hitResult.getPos();
+                Vec3d offset = velocity.normalize().multiply(-0.05); // Slight offset back
+                bobber.setPosition(hitPos.add(offset));
                 bobber.setVelocity(Vec3d.ZERO);
+                bobber.velocityModified = true;
             } else {
                 // Also check if bobber is inside a block (collision happened)
                 BlockPos bobberBlockPos = bobber.getBlockPos();
                 if (!bobber.getWorld().getBlockState(bobberBlockPos).isAir()) {
                     leo_enchants$attachedBlock = bobberBlockPos;
+                    // Position at center of approach face
+                    Vec3d blockCenter = Vec3d.ofCenter(bobberBlockPos);
+                    Vec3d approachDir = velocity.normalize();
+                    Vec3d attachPos = blockCenter.subtract(approachDir.multiply(0.55));
+                    bobber.setPosition(attachPos);
                     bobber.setVelocity(Vec3d.ZERO);
+                    bobber.velocityModified = true;
                 }
             }
         }
@@ -188,20 +208,28 @@ public abstract class FishingBobberEntityMixin implements HookshotBobberAccessor
     
     /**
      * Handle hookshot enchantment use - pull player to attached block.
+     * This is called when the player right-clicks again to retract the hook.
      */
     @Unique
     private void handleHookshotUse(FishingBobberEntity bobber, PlayerEntity player, ItemStack usedItem, CallbackInfoReturnable<Integer> cir) {
+        // Only process on server side
+        if (bobber.getWorld().isClient()) {
+            bobber.discard();
+            cir.setReturnValue(0);
+            return;
+        }
+        
         Vec3d bobberPos = bobber.getPos();
         Vec3d playerPos = player.getPos();
         double distance = playerPos.distanceTo(bobberPos);
         
-        // Only pull if attached to a block and there's meaningful distance
-        if (leo_enchants$attachedBlock != null && distance > 1.5) {
-            // Execute hookshot pull logic
-            Vec3d targetPos = Vec3d.ofCenter(leo_enchants$attachedBlock);
-            HookshotHandler.pullPlayerToBlock(player, targetPos, leo_enchants$attachedBlock);
+        // If hook is attached to a block, pull player to it
+        if (leo_enchants$attachedBlock != null && distance > 1.0) {
+            // Execute hookshot pull logic - use bobber position as reference
+            // since that's where the hook visually is
+            HookshotHandler.pullPlayerToBlock(player, bobberPos, leo_enchants$attachedBlock);
             
-            // Consume 2 durability on the fishing rod (server-side only)
+            // Consume 2 durability on the fishing rod
             if (player instanceof ServerPlayerEntity serverPlayer) {
                 EquipmentSlot slot = EquipmentSlot.MAINHAND;
                 ItemStack mainHand = player.getStackInHand(Hand.MAIN_HAND);

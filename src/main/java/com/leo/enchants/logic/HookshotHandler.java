@@ -56,14 +56,14 @@ public class HookshotHandler {
      * Pull the player toward the hookshot target position.
      * 
      * @param player The player to pull
-     * @param targetPos The position to pull toward (block position)
+     * @param bobberPos The actual position of the bobber (where hook landed)
      * @param attachedBlock The block the hook attached to
      */
-    public static void pullPlayerToBlock(PlayerEntity player, Vec3d targetPos, BlockPos attachedBlock) {
+    public static void pullPlayerToBlock(PlayerEntity player, Vec3d bobberPos, BlockPos attachedBlock) {
         Vec3d playerPos = player.getPos();
         
-        // Calculate a safe position adjacent to the block (not inside it)
-        Vec3d safePosition = findSafePosition(player, targetPos, attachedBlock);
+        // Calculate a safe position near the bobber but not inside the block
+        Vec3d safePosition = findSafePosition(player, bobberPos, attachedBlock);
         
         // Grant fall damage immunity
         if (player instanceof ServerPlayerEntity serverPlayer) {
@@ -75,6 +75,12 @@ public class HookshotHandler {
             long pullEndTime = currentTime + PULL_PHASE_TICKS;
             long holdEndTime = pullEndTime + HOLD_DURATION_TICKS;
             activeHolds.put(player.getUuid(), new HookshotHoldData(safePosition, pullEndTime, holdEndTime, attachedBlock));
+            
+            // Also apply an immediate velocity boost toward the target
+            Vec3d direction = safePosition.subtract(playerPos).normalize();
+            double initialSpeed = Math.min(playerPos.distanceTo(safePosition) * 0.5, 2.0);
+            player.setVelocity(direction.multiply(initialSpeed));
+            player.velocityModified = true;
         }
         
         // Reset fall distance
@@ -94,25 +100,30 @@ public class HookshotHandler {
         
         // Spawn particles along the path
         if (player.getWorld() instanceof ServerWorld serverWorld) {
-            spawnHookshotParticles(serverWorld, playerPos, targetPos);
+            spawnHookshotParticles(serverWorld, playerPos, bobberPos);
         }
     }
     
     /**
-     * Find position right at the block surface.
+     * Find position near the bobber but with clearance from the block.
      * This is where the player will be pulled to and held.
      */
-    private static Vec3d findSafePosition(PlayerEntity player, Vec3d targetPos, BlockPos attachedBlock) {
+    private static Vec3d findSafePosition(PlayerEntity player, Vec3d bobberPos, BlockPos attachedBlock) {
         Vec3d playerPos = player.getPos();
         Vec3d blockCenter = Vec3d.ofCenter(attachedBlock);
         
-        // Direction from player to block
-        Vec3d toBlock = blockCenter.subtract(playerPos).normalize();
+        // Direction from block center to bobber (this is the "out" direction)
+        Vec3d outDirection = bobberPos.subtract(blockCenter);
+        if (outDirection.lengthSquared() < 0.01) {
+            // If bobber is at block center, use direction from player instead
+            outDirection = blockCenter.subtract(playerPos).normalize().multiply(-1);
+        } else {
+            outDirection = outDirection.normalize();
+        }
         
-        // Position right at the block surface
-        // Block surface is 0.5 from center, player needs ~0.4 clearance
-        // So 0.9 from block center puts player right against the surface
-        Vec3d safePos = blockCenter.subtract(toBlock.multiply(0.9));
+        // Position player about 0.5 blocks from the block surface (player needs clearance)
+        // Block surface is 0.5 from center, so 1.0 from center puts us 0.5 from surface
+        Vec3d safePos = blockCenter.add(outDirection.multiply(1.0));
         
         return safePos;
     }
@@ -171,15 +182,24 @@ public class HookshotHandler {
         // Calculate direction to target
         Vec3d pullDir = holdPos.subtract(playerPos).normalize();
         
-        // Very strong pull - get to block fast!
+        // Strong pull - scale with distance
         double pullSpeed;
-        if (distance > 5.0) {
-            pullSpeed = 3.5; // Very fast when far
-        } else if (distance > 1.5) {
-            pullSpeed = 2.5; // Fast when medium distance
-        } else {
-            pullSpeed = 1.5; // Still fast when close
+        if (distance > 10.0) {
+            pullSpeed = 4.0; // Very fast when far
+        } else if (distance > 5.0) {
+            pullSpeed = 3.5; // Fast when medium-far
+        } else if (distance > 2.0) {
+            pullSpeed = 2.5; // Medium when closer
+        } else if (distance > 0.5) {
+            pullSpeed = 1.5; // Slower when very close
             data.reachedTarget = true;
+        } else {
+            // Very close - just set position directly
+            player.setPosition(holdPos.x, holdPos.y, holdPos.z);
+            player.setVelocity(0, 0, 0);
+            player.velocityModified = true;
+            data.reachedTarget = true;
+            return;
         }
         
         // Set velocity directly toward target
@@ -196,29 +216,27 @@ public class HookshotHandler {
      */
     private static void applyHoldEffect(PlayerEntity player, HookshotHoldData data, double distance) {
         Vec3d holdPos = data.holdPosition;
+        Vec3d playerPos = player.getPos();
         
         // If player is close enough, LOCK them to the position
-        if (distance < 1.5) {
-            // Teleport player to hold position to stick them to wall
-            player.setPosition(holdPos.x, holdPos.y, holdPos.z);
-            
-            // Zero out velocity to prevent drifting
-            player.setVelocity(0, 0, 0);
+        if (distance < 0.5) {
+            // Player is at the hold position - keep them there
+            // Apply a small "sticky" velocity to counteract gravity
+            player.setVelocity(0, 0.02, 0); // Tiny upward to counteract gravity
             player.velocityModified = true;
             
             // Check for suffocation and adjust if needed
             preventSuffocation(player, data);
-        } else if (distance < 5.0) {
-            // Player drifted, pull them back strongly
-            Vec3d playerPos = player.getPos();
+        } else if (distance < 3.0) {
+            // Player drifted slightly, pull them back
             Vec3d pullDir = holdPos.subtract(playerPos).normalize();
-            double pullStrength = Math.min(distance * 0.8, 2.0);
+            double pullStrength = Math.min(distance * 1.5, 2.0);
             
             Vec3d newVelocity = pullDir.multiply(pullStrength);
             player.setVelocity(newVelocity);
             player.velocityModified = true;
         }
-        // If player is too far (>5 blocks), they've escaped somehow, let them go
+        // If player is too far (>3 blocks), they've escaped somehow, let them go
     }
     
     /**
@@ -228,28 +246,27 @@ public class HookshotHandler {
         BlockPos playerBlockPos = player.getBlockPos();
         BlockPos headPos = playerBlockPos.up();
         
-        boolean feetInBlock = !player.getWorld().getBlockState(playerBlockPos).isAir() && 
-                              player.getWorld().getBlockState(playerBlockPos).isSolidBlock(player.getWorld(), playerBlockPos);
-        boolean headInBlock = !player.getWorld().getBlockState(headPos).isAir() && 
-                              player.getWorld().getBlockState(headPos).isSolidBlock(player.getWorld(), headPos);
+        boolean feetInBlock = player.getWorld().getBlockState(playerBlockPos).isSolidBlock(player.getWorld(), playerBlockPos);
+        boolean headInBlock = player.getWorld().getBlockState(headPos).isSolidBlock(player.getWorld(), headPos);
         
         if (feetInBlock || headInBlock) {
-            // Push player out of the block
+            // Push player out of the block toward their hold position
             Vec3d blockCenter = Vec3d.ofCenter(data.attachedBlock);
-            Vec3d playerPos = player.getPos();
+            Vec3d holdPos = data.holdPosition;
             
-            Vec3d pushDir = playerPos.subtract(blockCenter);
-            if (pushDir.horizontalLength() < 0.1) {
-                // If directly above/below, push based on original approach direction
-                pushDir = data.holdPosition.subtract(blockCenter).normalize().multiply(-1);
+            // The hold position should already be outside the block
+            // Push the player toward the hold position
+            Vec3d pushDir = holdPos.subtract(blockCenter);
+            if (pushDir.lengthSquared() < 0.01) {
+                // Fallback: push upward
+                pushDir = new Vec3d(0, 1, 0);
             } else {
-                pushDir = new Vec3d(pushDir.x, 0, pushDir.z).normalize();
+                pushDir = pushDir.normalize();
             }
             
-            // Move player out
-            player.setPosition(player.getX() + pushDir.x * 0.5, 
-                             player.getY() + 0.1, 
-                             player.getZ() + pushDir.z * 0.5);
+            // Move player out toward the hold position
+            Vec3d newPos = blockCenter.add(pushDir.multiply(1.2));
+            player.setPosition(newPos.x, newPos.y, newPos.z);
         }
     }
     
