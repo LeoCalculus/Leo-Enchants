@@ -19,6 +19,7 @@ import com.leo.enchants.entity.ModEntities;
 import com.leo.enchants.logic.FallDamageImmunity;
 import com.leo.enchants.logic.GiantSwordLogic;
 import com.leo.enchants.logic.HookshotHandler;
+import com.leo.enchants.logic.ShadowAssassinHandler;
 import com.leo.enchants.logic.WitherImpactLogic;
 import com.leo.enchants.network.ModNetworking;
 
@@ -34,6 +35,7 @@ public class LeoEnchantsMod implements ModInitializer {
     public static final RegistryKey<Enchantment> GRAB = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "grab"));
     public static final RegistryKey<Enchantment> GIANT = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "giant"));
     public static final RegistryKey<Enchantment> HOOKSHOT = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "hookshot"));
+    public static final RegistryKey<Enchantment> SHADOW_ASSASSIN = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "shadow_assassin"));
 
     @Override
     public void onInitialize() {
@@ -60,6 +62,8 @@ public class LeoEnchantsMod implements ModInitializer {
             for (var world : server.getWorlds()) {
                 HookshotHandler.tickHolds(world);
             }
+            
+            ShadowAssassinHandler.tickRestorations(server, currentTime);
         });
 
         // Register Event Listener for Wither Impact activation
@@ -112,5 +116,8 @@ public class LeoEnchantsMod implements ModInitializer {
             }
             return ActionResult.PASS;
         });
+
+        // Register Event Listener for Shadow Assassin chestplate activation
+        UseItemCallback.EVENT.register(ShadowAssassinHandler::tryActivate);
     }
 }

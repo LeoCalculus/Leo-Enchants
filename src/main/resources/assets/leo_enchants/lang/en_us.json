@@ -6,5 +6,7 @@
     "enchantment.leo_enchants.grab": "Grab",
     "enchantment.leo_enchants.giant": "Giant",
     "enchantment.leo_enchants.hookshot": "Hookshot",
-    "entity.leo_enchants.giant_sword": "Giant Sword"
+    "enchantment.leo_enchants.shadow_assassin": "Shadow Assassin",
+    "entity.leo_enchants.giant_sword": "Giant Sword",
+    "entity.leo_enchants.shadow_clone": "Shadow Clone"
 }

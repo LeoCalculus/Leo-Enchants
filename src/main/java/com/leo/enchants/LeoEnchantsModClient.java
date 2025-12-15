@@ -7,6 +7,7 @@ import com.leo.enchants.logic.StrafeHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import com.leo.enchants.client.ShadowCloneRenderer;
 
 public class LeoEnchantsModClient implements ClientModInitializer {
     
@@ -16,6 +17,7 @@ public class LeoEnchantsModClient implements ClientModInitializer {
         
         // Register entity renderers
         EntityRendererRegistry.register(ModEntities.GIANT_SWORD, GiantSwordEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.SHADOW_CLONE, ShadowCloneRenderer::new);
         
         // Register client tick events for enchantment handling
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
