@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        "minecraft:command_block",
+        "#minecraft:buttons"
+    ],
+    "result": {
+        "id": "leo_enchants:de_enchant",
+        "count": 1
+    }
+}

@@ -20,6 +20,10 @@ public class ModEntities {
         RegistryKeys.ENTITY_TYPE,
         Identifier.of(LeoEnchantsMod.MOD_ID, "shadow_clone")
     );
+    public static final RegistryKey<EntityType<?>> DIGIT_DISINTEGRATION_KEY = RegistryKey.of(
+        RegistryKeys.ENTITY_TYPE,
+        Identifier.of(LeoEnchantsMod.MOD_ID, "digit_disintegration")
+    );
     
     public static final EntityType<GiantSwordEntity> GIANT_SWORD = Registry.register(
         Registries.ENTITY_TYPE,
@@ -41,10 +45,21 @@ public class ModEntities {
             .build(SHADOW_CLONE_KEY)
     );
     
+    public static final EntityType<DigitDisintegrationEntity> DIGIT_DISINTEGRATION = Registry.register(
+        Registries.ENTITY_TYPE,
+        DIGIT_DISINTEGRATION_KEY,
+        EntityType.Builder.<DigitDisintegrationEntity>create(DigitDisintegrationEntity::new, SpawnGroup.MISC)
+            .dimensions(0.1f, 0.1f)
+            .maxTrackingRange(64)
+            .trackingTickInterval(2)
+            .build(DIGIT_DISINTEGRATION_KEY)
+    );
+    
     public static void register() {
         LeoEnchantsMod.LOGGER.info("Registering Giant Sword Entity for " + LeoEnchantsMod.MOD_ID);
         // Register shadow clone with proper living entity attributes
         FabricDefaultAttributeRegistry.register(SHADOW_CLONE, ShadowCloneEntity.createShadowCloneAttributes());
         LeoEnchantsMod.LOGGER.info("Registering Shadow Clone Entity for " + LeoEnchantsMod.MOD_ID);
+        LeoEnchantsMod.LOGGER.info("Registering Digit Disintegration Entity for " + LeoEnchantsMod.MOD_ID);
     }
 }

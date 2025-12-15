@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.leo.enchants.entity.ModEntities;
+import com.leo.enchants.item.ModItems;
+import com.leo.enchants.logic.DeEnchantHandler;
 import com.leo.enchants.logic.FallDamageImmunity;
 import com.leo.enchants.logic.GiantSwordLogic;
 import com.leo.enchants.logic.HookshotHandler;
@@ -47,6 +49,12 @@ public class LeoEnchantsMod implements ModInitializer {
 
         // Register entities
         ModEntities.register();
+        
+        // Register items
+        ModItems.register();
+        
+        // Register de-enchant item event handlers
+        DeEnchantHandler.register();
 
         // Register networking for double jump fall damage immunity sync
         ModNetworking.registerServerReceivers();
