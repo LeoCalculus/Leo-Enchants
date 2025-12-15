@@ -10,5 +10,8 @@
     "entity.leo_enchants.giant_sword": "Giant Sword",
     "entity.leo_enchants.shadow_clone": "Shadow Clone",
     "entity.leo_enchants.digit_disintegration": "Digital Disintegration",
-    "item.leo_enchants.de_enchant": "De-Enchant"
+    "entity.leo_enchants.obsidian_bridge": "Obsidian Bridge",
+    "entity.leo_enchants.obsidian_strike": "Obsidian Strike",
+    "item.leo_enchants.de_enchant": "De-Enchant",
+    "item.leo_enchants.obsidian_lore": "Lore of Obsidian"
 }

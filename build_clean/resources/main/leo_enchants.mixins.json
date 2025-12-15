@@ -21,6 +21,7 @@
         "client.CreeperEntityRendererMixin",
         "client.CreeperEntityRendererUpdateStateMixin",
         "client.CreeperEntityRenderStateMixin",
+        "client.HeldItemRendererMixin",
         "client.ProjectileEntityRendererMixin",
         "client.ProjectileEntityRendererUpdateStateMixin",
         "client.ProjectileEntityRenderStateMixin"

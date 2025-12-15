@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "OOO",
+        "OOO",
+        "OOO"
+    ],
+    "key": {
+        "O": "minecraft:obsidian"
+    },
+    "result": {
+        "id": "leo_enchants:obsidian_lore",
+        "count": 1
+    }
+}

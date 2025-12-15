@@ -48,6 +48,9 @@
     "com/leo/enchants/mixin/client/CreeperEntityRendererUpdateStateMixin": {
       "updateRenderState(Lnet/minecraft/entity/mob/CreeperEntity;Lnet/minecraft/client/render/entity/state/CreeperEntityRenderState;F)V": "Lnet/minecraft/class_887;method_62402(Lnet/minecraft/class_1548;Lnet/minecraft/class_10010;F)V"
     },
+    "com/leo/enchants/mixin/client/HeldItemRendererMixin": {
+      "renderFirstPersonItem": "Lnet/minecraft/class_759;method_3228(Lnet/minecraft/class_742;FFLnet/minecraft/class_1268;FLnet/minecraft/class_1799;FLnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
+    },
     "com/leo/enchants/mixin/client/ProjectileEntityRendererMixin": {
       "render(Lnet/minecraft/client/render/entity/state/ProjectileEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V": "Lnet/minecraft/class_876;method_3875(Lnet/minecraft/class_9999;Lnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
     },
@@ -104,6 +107,9 @@
       },
       "com/leo/enchants/mixin/client/CreeperEntityRendererUpdateStateMixin": {
         "updateRenderState(Lnet/minecraft/entity/mob/CreeperEntity;Lnet/minecraft/client/render/entity/state/CreeperEntityRenderState;F)V": "Lnet/minecraft/class_887;method_62402(Lnet/minecraft/class_1548;Lnet/minecraft/class_10010;F)V"
+      },
+      "com/leo/enchants/mixin/client/HeldItemRendererMixin": {
+        "renderFirstPersonItem": "Lnet/minecraft/class_759;method_3228(Lnet/minecraft/class_742;FFLnet/minecraft/class_1268;FLnet/minecraft/class_1799;FLnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
       },
       "com/leo/enchants/mixin/client/ProjectileEntityRendererMixin": {
         "render(Lnet/minecraft/client/render/entity/state/ProjectileEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V": "Lnet/minecraft/class_876;method_3875(Lnet/minecraft/class_9999;Lnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"

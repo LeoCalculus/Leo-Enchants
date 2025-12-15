@@ -24,6 +24,14 @@ public class ModEntities {
         RegistryKeys.ENTITY_TYPE,
         Identifier.of(LeoEnchantsMod.MOD_ID, "digit_disintegration")
     );
+    public static final RegistryKey<EntityType<?>> OBSIDIAN_BRIDGE_KEY = RegistryKey.of(
+        RegistryKeys.ENTITY_TYPE,
+        Identifier.of(LeoEnchantsMod.MOD_ID, "obsidian_bridge")
+    );
+    public static final RegistryKey<EntityType<?>> OBSIDIAN_STRIKE_KEY = RegistryKey.of(
+        RegistryKeys.ENTITY_TYPE,
+        Identifier.of(LeoEnchantsMod.MOD_ID, "obsidian_strike")
+    );
     
     public static final EntityType<GiantSwordEntity> GIANT_SWORD = Registry.register(
         Registries.ENTITY_TYPE,
@@ -55,11 +63,33 @@ public class ModEntities {
             .build(DIGIT_DISINTEGRATION_KEY)
     );
     
+    public static final EntityType<ObsidianBridgeEntity> OBSIDIAN_BRIDGE = Registry.register(
+        Registries.ENTITY_TYPE,
+        OBSIDIAN_BRIDGE_KEY,
+        EntityType.Builder.<ObsidianBridgeEntity>create(ObsidianBridgeEntity::new, SpawnGroup.MISC)
+            .dimensions(0.5f, 0.5f)
+            .maxTrackingRange(128)
+            .trackingTickInterval(1)
+            .build(OBSIDIAN_BRIDGE_KEY)
+    );
+    
+    public static final EntityType<ObsidianStrikeEntity> OBSIDIAN_STRIKE = Registry.register(
+        Registries.ENTITY_TYPE,
+        OBSIDIAN_STRIKE_KEY,
+        EntityType.Builder.<ObsidianStrikeEntity>create(ObsidianStrikeEntity::new, SpawnGroup.MISC)
+            .dimensions(0.5f, 0.5f)
+            .maxTrackingRange(128)
+            .trackingTickInterval(1)
+            .build(OBSIDIAN_STRIKE_KEY)
+    );
+    
     public static void register() {
         LeoEnchantsMod.LOGGER.info("Registering Giant Sword Entity for " + LeoEnchantsMod.MOD_ID);
         // Register shadow clone with proper living entity attributes
         FabricDefaultAttributeRegistry.register(SHADOW_CLONE, ShadowCloneEntity.createShadowCloneAttributes());
         LeoEnchantsMod.LOGGER.info("Registering Shadow Clone Entity for " + LeoEnchantsMod.MOD_ID);
         LeoEnchantsMod.LOGGER.info("Registering Digit Disintegration Entity for " + LeoEnchantsMod.MOD_ID);
+        LeoEnchantsMod.LOGGER.info("Registering Obsidian Bridge Entity for " + LeoEnchantsMod.MOD_ID);
+        LeoEnchantsMod.LOGGER.info("Registering Obsidian Strike Entity for " + LeoEnchantsMod.MOD_ID);
     }
 }

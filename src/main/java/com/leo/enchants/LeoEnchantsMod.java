@@ -21,6 +21,7 @@ import com.leo.enchants.logic.DeEnchantHandler;
 import com.leo.enchants.logic.FallDamageImmunity;
 import com.leo.enchants.logic.GiantSwordLogic;
 import com.leo.enchants.logic.HookshotHandler;
+import com.leo.enchants.logic.ObsidianLoreHandler;
 import com.leo.enchants.logic.ShadowAssassinHandler;
 import com.leo.enchants.logic.WitherImpactLogic;
 import com.leo.enchants.network.ModNetworking;
@@ -55,6 +56,9 @@ public class LeoEnchantsMod implements ModInitializer {
         
         // Register de-enchant item event handlers
         DeEnchantHandler.register();
+        
+        // Register obsidian lore item event handlers
+        ObsidianLoreHandler.register();
 
         // Register networking for double jump fall damage immunity sync
         ModNetworking.registerServerReceivers();
