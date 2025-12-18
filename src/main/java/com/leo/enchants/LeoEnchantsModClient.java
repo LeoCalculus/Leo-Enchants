@@ -2,6 +2,7 @@ package com.leo.enchants;
 
 import com.leo.enchants.client.DigitDisintegrationRenderer;
 import com.leo.enchants.client.GiantSwordEntityRenderer;
+import com.leo.enchants.client.MirrorBarrierRenderer;
 import com.leo.enchants.client.ObsidianBridgeRenderer;
 import com.leo.enchants.client.ObsidianStrikeRenderer;
 import com.leo.enchants.client.ShadowCloneRenderer;
@@ -24,6 +25,7 @@ public class LeoEnchantsModClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.DIGIT_DISINTEGRATION, DigitDisintegrationRenderer::new);
         EntityRendererRegistry.register(ModEntities.OBSIDIAN_BRIDGE, ObsidianBridgeRenderer::new);
         EntityRendererRegistry.register(ModEntities.OBSIDIAN_STRIKE, ObsidianStrikeRenderer::new);
+        EntityRendererRegistry.register(ModEntities.MIRROR_BARRIER, MirrorBarrierRenderer::new);
         
         // Register client tick events for enchantment handling
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

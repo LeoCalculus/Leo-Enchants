@@ -32,6 +32,10 @@ public class ModEntities {
         RegistryKeys.ENTITY_TYPE,
         Identifier.of(LeoEnchantsMod.MOD_ID, "obsidian_strike")
     );
+    public static final RegistryKey<EntityType<?>> MIRROR_BARRIER_KEY = RegistryKey.of(
+        RegistryKeys.ENTITY_TYPE,
+        Identifier.of(LeoEnchantsMod.MOD_ID, "mirror_barrier")
+    );
     
     public static final EntityType<GiantSwordEntity> GIANT_SWORD = Registry.register(
         Registries.ENTITY_TYPE,
@@ -83,6 +87,16 @@ public class ModEntities {
             .build(OBSIDIAN_STRIKE_KEY)
     );
     
+    public static final EntityType<MirrorBarrierEntity> MIRROR_BARRIER = Registry.register(
+        Registries.ENTITY_TYPE,
+        MIRROR_BARRIER_KEY,
+        EntityType.Builder.<MirrorBarrierEntity>create(MirrorBarrierEntity::new, SpawnGroup.MISC)
+            .dimensions(0.5f, 0.5f)
+            .maxTrackingRange(128)
+            .trackingTickInterval(1)
+            .build(MIRROR_BARRIER_KEY)
+    );
+    
     public static void register() {
         LeoEnchantsMod.LOGGER.info("Registering Giant Sword Entity for " + LeoEnchantsMod.MOD_ID);
         // Register shadow clone with proper living entity attributes
@@ -91,5 +105,6 @@ public class ModEntities {
         LeoEnchantsMod.LOGGER.info("Registering Digit Disintegration Entity for " + LeoEnchantsMod.MOD_ID);
         LeoEnchantsMod.LOGGER.info("Registering Obsidian Bridge Entity for " + LeoEnchantsMod.MOD_ID);
         LeoEnchantsMod.LOGGER.info("Registering Obsidian Strike Entity for " + LeoEnchantsMod.MOD_ID);
+        LeoEnchantsMod.LOGGER.info("Registering Mirror Barrier Entity for " + LeoEnchantsMod.MOD_ID);
     }
 }

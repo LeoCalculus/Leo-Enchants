@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "GPG",
+        "PEP",
+        "GPG"
+    ],
+    "key": {
+        "G": "minecraft:glass",
+        "P": "minecraft:ender_pearl",
+        "E": "minecraft:ender_eye"
+    },
+    "result": {
+        "id": "leo_enchants:mirror_barrier",
+        "count": 1
+    }
+}

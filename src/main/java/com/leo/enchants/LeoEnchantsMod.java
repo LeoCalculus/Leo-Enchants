@@ -21,6 +21,7 @@ import com.leo.enchants.logic.DeEnchantHandler;
 import com.leo.enchants.logic.FallDamageImmunity;
 import com.leo.enchants.logic.GiantSwordLogic;
 import com.leo.enchants.logic.HookshotHandler;
+import com.leo.enchants.logic.MirrorWorldHandler;
 import com.leo.enchants.logic.ObsidianLoreHandler;
 import com.leo.enchants.logic.ShadowAssassinHandler;
 import com.leo.enchants.logic.WitherImpactLogic;
@@ -73,6 +74,8 @@ public class LeoEnchantsMod implements ModInitializer {
             // Tick hookshot holds in all worlds
             for (var world : server.getWorlds()) {
                 HookshotHandler.tickHolds(world);
+                // Tick mirror worlds
+                MirrorWorldHandler.tickMirrorWorlds(world);
             }
             
             ShadowAssassinHandler.tickRestorations(server, currentTime);

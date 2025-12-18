@@ -23,6 +23,11 @@ public class ModItems {
         Identifier.of(LeoEnchantsMod.MOD_ID, "obsidian_lore")
     );
     
+    public static final RegistryKey<Item> MIRROR_BARRIER_KEY = RegistryKey.of(
+        RegistryKeys.ITEM,
+        Identifier.of(LeoEnchantsMod.MOD_ID, "mirror_barrier")
+    );
+    
     public static final Item DE_ENCHANT = Registry.register(
         Registries.ITEM,
         DE_ENCHANT_KEY,
@@ -41,20 +46,32 @@ public class ModItems {
             .registryKey(OBSIDIAN_LORE_KEY))
     );
     
+    public static final Item MIRROR_BARRIER = Registry.register(
+        Registries.ITEM,
+        MIRROR_BARRIER_KEY,
+        new MirrorBarrierItem(new Item.Settings()
+            .maxCount(1)
+            .rarity(Rarity.EPIC)
+            .registryKey(MIRROR_BARRIER_KEY))
+    );
+    
     public static void register() {
         LeoEnchantsMod.LOGGER.info("Registering De-Enchant Item for " + LeoEnchantsMod.MOD_ID);
         LeoEnchantsMod.LOGGER.info("Registering Obsidian Lore Item for " + LeoEnchantsMod.MOD_ID);
+        LeoEnchantsMod.LOGGER.info("Registering Mirror Barrier Item for " + LeoEnchantsMod.MOD_ID);
         
         // Add item to the Tools creative tab
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(DE_ENCHANT);
             entries.add(OBSIDIAN_LORE);
+            entries.add(MIRROR_BARRIER);
         });
         
         // Also add to Operator Utilities (since it uses command blocks)
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.OPERATOR).register(entries -> {
             entries.add(DE_ENCHANT);
             entries.add(OBSIDIAN_LORE);
+            entries.add(MIRROR_BARRIER);
         });
     }
 }

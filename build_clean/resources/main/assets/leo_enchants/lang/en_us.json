@@ -12,6 +12,8 @@
     "entity.leo_enchants.digit_disintegration": "Digital Disintegration",
     "entity.leo_enchants.obsidian_bridge": "Obsidian Bridge",
     "entity.leo_enchants.obsidian_strike": "Obsidian Strike",
+    "entity.leo_enchants.mirror_barrier": "Mirror Barrier",
     "item.leo_enchants.de_enchant": "De-Enchant",
-    "item.leo_enchants.obsidian_lore": "Lore of Obsidian"
+    "item.leo_enchants.obsidian_lore": "Lore of Obsidian",
+    "item.leo_enchants.mirror_barrier": "Mirror Barrier"
 }

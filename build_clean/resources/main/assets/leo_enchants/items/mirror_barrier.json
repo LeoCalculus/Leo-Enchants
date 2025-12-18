@@ -1,10 +1,6 @@
 {
     "model": {
         "type": "minecraft:model",
-        "model": "leo_enchants:item/de_enchant"
+        "model": "leo_enchants:item/mirror_barrier"
     }
 }
-
-
-
-
