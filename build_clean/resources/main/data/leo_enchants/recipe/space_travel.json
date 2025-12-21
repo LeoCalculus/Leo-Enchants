@@ -1,0 +1,13 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        "minecraft:dirt",
+        "minecraft:obsidian",
+        "minecraft:end_stone"
+    ],
+    "result": {
+        "id": "leo_enchants:space_travel",
+        "count": 1
+    }
+}
+

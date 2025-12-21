@@ -13,7 +13,9 @@
     "entity.leo_enchants.obsidian_bridge": "Obsidian Bridge",
     "entity.leo_enchants.obsidian_strike": "Obsidian Strike",
     "entity.leo_enchants.mirror_barrier": "Mirror Barrier",
+    "entity.leo_enchants.space_travel_portal": "Space Travel Portal",
     "item.leo_enchants.de_enchant": "De-Enchant",
     "item.leo_enchants.obsidian_lore": "Lore of Obsidian",
-    "item.leo_enchants.mirror_barrier": "Mirror Barrier"
+    "item.leo_enchants.mirror_barrier": "Mirror Barrier",
+    "item.leo_enchants.space_travel": "Space Travel"
 }

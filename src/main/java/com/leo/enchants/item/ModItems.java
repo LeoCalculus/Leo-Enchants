@@ -28,6 +28,11 @@ public class ModItems {
         Identifier.of(LeoEnchantsMod.MOD_ID, "mirror_barrier")
     );
     
+    public static final RegistryKey<Item> SPACE_TRAVEL_KEY = RegistryKey.of(
+        RegistryKeys.ITEM,
+        Identifier.of(LeoEnchantsMod.MOD_ID, "space_travel")
+    );
+    
     public static final Item DE_ENCHANT = Registry.register(
         Registries.ITEM,
         DE_ENCHANT_KEY,
@@ -55,16 +60,27 @@ public class ModItems {
             .registryKey(MIRROR_BARRIER_KEY))
     );
     
+    public static final Item SPACE_TRAVEL = Registry.register(
+        Registries.ITEM,
+        SPACE_TRAVEL_KEY,
+        new SpaceTravelItem(new Item.Settings()
+            .maxCount(1)
+            .rarity(Rarity.EPIC)
+            .registryKey(SPACE_TRAVEL_KEY))
+    );
+    
     public static void register() {
         LeoEnchantsMod.LOGGER.info("Registering De-Enchant Item for " + LeoEnchantsMod.MOD_ID);
         LeoEnchantsMod.LOGGER.info("Registering Obsidian Lore Item for " + LeoEnchantsMod.MOD_ID);
         LeoEnchantsMod.LOGGER.info("Registering Mirror Barrier Item for " + LeoEnchantsMod.MOD_ID);
+        LeoEnchantsMod.LOGGER.info("Registering Space Travel Item for " + LeoEnchantsMod.MOD_ID);
         
         // Add item to the Tools creative tab
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(DE_ENCHANT);
             entries.add(OBSIDIAN_LORE);
             entries.add(MIRROR_BARRIER);
+            entries.add(SPACE_TRAVEL);
         });
         
         // Also add to Operator Utilities (since it uses command blocks)
@@ -72,6 +88,7 @@ public class ModItems {
             entries.add(DE_ENCHANT);
             entries.add(OBSIDIAN_LORE);
             entries.add(MIRROR_BARRIER);
+            entries.add(SPACE_TRAVEL);
         });
     }
 }

@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "leo_enchants:item/space_travel"
+    }
+}
+

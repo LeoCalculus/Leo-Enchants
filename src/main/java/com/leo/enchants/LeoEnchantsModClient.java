@@ -6,6 +6,7 @@ import com.leo.enchants.client.MirrorBarrierRenderer;
 import com.leo.enchants.client.ObsidianBridgeRenderer;
 import com.leo.enchants.client.ObsidianStrikeRenderer;
 import com.leo.enchants.client.ShadowCloneRenderer;
+import com.leo.enchants.client.SpaceTravelPortalRenderer;
 import com.leo.enchants.entity.ModEntities;
 import com.leo.enchants.logic.DoubleJumpHandler;
 import com.leo.enchants.logic.StrafeHandler;
@@ -26,6 +27,7 @@ public class LeoEnchantsModClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.OBSIDIAN_BRIDGE, ObsidianBridgeRenderer::new);
         EntityRendererRegistry.register(ModEntities.OBSIDIAN_STRIKE, ObsidianStrikeRenderer::new);
         EntityRendererRegistry.register(ModEntities.MIRROR_BARRIER, MirrorBarrierRenderer::new);
+        EntityRendererRegistry.register(ModEntities.SPACE_TRAVEL_PORTAL, SpaceTravelPortalRenderer::new);
         
         // Register client tick events for enchantment handling
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
