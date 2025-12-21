@@ -28,7 +28,7 @@
     "com/leo/enchants/mixin/HeavyArrowMixin": {
       "initDataTracker": "Lnet/minecraft/class_1665;method_5693(Lnet/minecraft/class_2945$class_9222;)V",
       "onEntityHit": "Lnet/minecraft/class_1665;method_7454(Lnet/minecraft/class_3966;)V",
-      "setVelocity(DDDFF)V": "Lnet/minecraft/class_1665;method_7485(DDDFF)V"
+      "tick": "Lnet/minecraft/class_1665;method_5773()V"
     },
     "com/leo/enchants/mixin/LivingEntityMixin": {
       "getAttributeValue": "Lnet/minecraft/class_1309;method_45325(Lnet/minecraft/class_6880;)D"
@@ -88,7 +88,7 @@
       "com/leo/enchants/mixin/HeavyArrowMixin": {
         "initDataTracker": "Lnet/minecraft/class_1665;method_5693(Lnet/minecraft/class_2945$class_9222;)V",
         "onEntityHit": "Lnet/minecraft/class_1665;method_7454(Lnet/minecraft/class_3966;)V",
-        "setVelocity(DDDFF)V": "Lnet/minecraft/class_1665;method_7485(DDDFF)V"
+        "tick": "Lnet/minecraft/class_1665;method_5773()V"
       },
       "com/leo/enchants/mixin/LivingEntityMixin": {
         "getAttributeValue": "Lnet/minecraft/class_1309;method_45325(Lnet/minecraft/class_6880;)D"

@@ -43,7 +43,7 @@ public class SpaceTravelPortalEntity extends Entity {
     private UUID ownerUuid = null;
     private int lifetimeTicks = 0;
     private float portalPitch = 0;
-    private static final int MAX_LIFETIME = 20 * 60; // 60 seconds max
+    private static final int MAX_LIFETIME = 20 * 30; // 30 seconds max before auto-close
     private static final int CLOSING_DURATION = 20 * 3; // 3 seconds
     
     // Portal dimensions for the curved surface
@@ -260,4 +260,5 @@ public class SpaceTravelPortalEntity extends Entity {
         return false;
     }
 }
+
 

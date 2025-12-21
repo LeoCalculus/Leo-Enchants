@@ -24,6 +24,7 @@ import com.leo.enchants.logic.HookshotHandler;
 import com.leo.enchants.logic.MirrorWorldHandler;
 import com.leo.enchants.logic.ObsidianLoreHandler;
 import com.leo.enchants.logic.ShadowAssassinHandler;
+import com.leo.enchants.logic.QuantumTunnellingHandler;
 import com.leo.enchants.logic.WitherImpactLogic;
 import com.leo.enchants.network.ModNetworking;
 
@@ -40,6 +41,7 @@ public class LeoEnchantsMod implements ModInitializer {
     public static final RegistryKey<Enchantment> GIANT = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "giant"));
     public static final RegistryKey<Enchantment> HOOKSHOT = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "hookshot"));
     public static final RegistryKey<Enchantment> SHADOW_ASSASSIN = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "shadow_assassin"));
+    public static final RegistryKey<Enchantment> QUANTUM_TUNNELLING = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "quantum_tunnelling"));
 
     @Override
     public void onInitialize() {
@@ -69,6 +71,8 @@ public class LeoEnchantsMod implements ModInitializer {
             long currentTime = server.getOverworld().getTime();
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                 FallDamageImmunity.tickImmunity(player, currentTime);
+                // Tick quantum tunnelling
+                QuantumTunnellingHandler.tick(player, currentTime);
             }
             
             // Tick hookshot holds in all worlds

@@ -12,3 +12,4 @@ public interface MagnifyArrowAccessor {
     float leo_enchants$getMagnifyScale();
 }
 
+

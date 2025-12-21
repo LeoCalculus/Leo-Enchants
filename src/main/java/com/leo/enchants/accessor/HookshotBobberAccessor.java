@@ -17,3 +17,4 @@ public interface HookshotBobberAccessor {
     BlockPos leo_enchants$getAttachedBlock();
 }
 
+

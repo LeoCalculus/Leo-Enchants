@@ -8,3 +8,4 @@ public interface MagnifyRenderStateAccessor {
     void leo_enchants$setMagnifyScale(float scale);
 }
 
+
