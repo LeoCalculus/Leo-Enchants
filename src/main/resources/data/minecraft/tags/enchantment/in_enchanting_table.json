@@ -1,0 +1,14 @@
+{
+    "replace": false,
+    "values": [
+        "leo_enchants:double_jump",
+        "leo_enchants:strafe",
+        "leo_enchants:wither_impact",
+        "leo_enchants:giant",
+        "leo_enchants:magnify",
+        "leo_enchants:grab",
+        "leo_enchants:hookshot",
+        "leo_enchants:shadow_assassin"
+    ]
+}
+
