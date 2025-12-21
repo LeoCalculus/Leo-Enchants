@@ -1,6 +1,7 @@
 package com.leo.enchants.mixin.client;
 
-import com.leo.enchants.mixin.MissileCreeperAccessor;
+import com.leo.enchants.accessor.MissileCreeperAccessor;
+import com.leo.enchants.accessor.client.MissileCreeperRenderStateAccessor;
 import net.minecraft.client.render.entity.CreeperEntityRenderer;
 import net.minecraft.client.render.entity.state.CreeperEntityRenderState;
 import net.minecraft.entity.mob.CreeperEntity;

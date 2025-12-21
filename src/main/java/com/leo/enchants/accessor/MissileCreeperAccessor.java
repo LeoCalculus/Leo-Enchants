@@ -1,4 +1,4 @@
-package com.leo.enchants.mixin;
+package com.leo.enchants.accessor;
 
 /**
  * Interface to track missile mode on creepers for rendering.
@@ -13,3 +13,4 @@ public interface MissileCreeperAccessor {
     
     float leo_enchants$getMissilePitch();
 }
+

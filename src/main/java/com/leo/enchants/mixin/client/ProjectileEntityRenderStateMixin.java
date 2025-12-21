@@ -1,5 +1,6 @@
 package com.leo.enchants.mixin.client;
 
+import com.leo.enchants.accessor.client.MagnifyRenderStateAccessor;
 import net.minecraft.client.render.entity.state.ProjectileEntityRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

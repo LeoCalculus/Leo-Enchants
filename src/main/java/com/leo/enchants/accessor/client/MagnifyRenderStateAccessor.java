@@ -1,4 +1,4 @@
-package com.leo.enchants.mixin.client;
+package com.leo.enchants.accessor.client;
 
 /**
  * Interface to access magnify scale from render state.

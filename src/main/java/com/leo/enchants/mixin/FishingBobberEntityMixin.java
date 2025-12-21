@@ -1,5 +1,6 @@
 package com.leo.enchants.mixin;
 
+import com.leo.enchants.accessor.HookshotBobberAccessor;
 import com.leo.enchants.logic.GrabHandler;
 import com.leo.enchants.logic.HookshotHandler;
 import net.minecraft.component.DataComponentTypes;

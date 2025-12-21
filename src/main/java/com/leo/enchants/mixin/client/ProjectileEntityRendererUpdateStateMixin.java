@@ -1,6 +1,7 @@
 package com.leo.enchants.mixin.client;
 
-import com.leo.enchants.mixin.MagnifyArrowAccessor;
+import com.leo.enchants.accessor.MagnifyArrowAccessor;
+import com.leo.enchants.accessor.client.MagnifyRenderStateAccessor;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.client.render.entity.state.ProjectileEntityRenderState;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;

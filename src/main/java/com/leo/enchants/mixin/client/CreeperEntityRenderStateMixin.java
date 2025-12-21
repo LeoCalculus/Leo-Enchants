@@ -1,5 +1,6 @@
 package com.leo.enchants.mixin.client;
 
+import com.leo.enchants.accessor.client.MissileCreeperRenderStateAccessor;
 import net.minecraft.client.render.entity.state.CreeperEntityRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

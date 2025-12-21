@@ -1,4 +1,4 @@
-package com.leo.enchants.mixin;
+package com.leo.enchants.accessor;
 
 /**
  * Interface injected into PersistentProjectileEntity to track magnify level and scale.

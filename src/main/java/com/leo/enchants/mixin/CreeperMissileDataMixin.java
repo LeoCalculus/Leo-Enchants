@@ -1,5 +1,6 @@
 package com.leo.enchants.mixin;
 
+import com.leo.enchants.accessor.MissileCreeperAccessor;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;

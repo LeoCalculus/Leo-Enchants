@@ -1,5 +1,6 @@
 package com.leo.enchants.mixin;
 
+import com.leo.enchants.accessor.HookshotBobberAccessor;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.player.PlayerEntity;

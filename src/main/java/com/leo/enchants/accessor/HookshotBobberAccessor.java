@@ -1,4 +1,4 @@
-package com.leo.enchants.mixin;
+package com.leo.enchants.accessor;
 
 import net.minecraft.util.math.BlockPos;
 
@@ -16,3 +16,4 @@ public interface HookshotBobberAccessor {
     
     BlockPos leo_enchants$getAttachedBlock();
 }
+

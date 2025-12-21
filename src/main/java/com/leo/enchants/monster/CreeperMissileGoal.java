@@ -1,6 +1,6 @@
 package com.leo.enchants.monster;
 
-import com.leo.enchants.mixin.MissileCreeperAccessor;
+import com.leo.enchants.accessor.MissileCreeperAccessor;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.mob.CreeperEntity;

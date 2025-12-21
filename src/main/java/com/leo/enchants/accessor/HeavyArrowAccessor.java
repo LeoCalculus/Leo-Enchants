@@ -1,4 +1,4 @@
-package com.leo.enchants.mixin;
+package com.leo.enchants.accessor;
 
 /**
  * Interface injected into PersistentProjectileEntity to track heavy arrows from enhanced skeletons.
@@ -10,3 +10,4 @@ public interface HeavyArrowAccessor {
     
     boolean leo_enchants$isHeavyArrow();
 }
+

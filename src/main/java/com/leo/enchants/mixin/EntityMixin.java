@@ -1,5 +1,6 @@
 package com.leo.enchants.mixin;
 
+import com.leo.enchants.accessor.MagnifyArrowAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;

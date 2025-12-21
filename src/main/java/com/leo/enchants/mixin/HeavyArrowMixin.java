@@ -1,5 +1,6 @@
 package com.leo.enchants.mixin;
 
+import com.leo.enchants.accessor.HeavyArrowAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;

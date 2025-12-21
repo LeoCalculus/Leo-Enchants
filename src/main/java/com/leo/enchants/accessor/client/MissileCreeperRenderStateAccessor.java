@@ -1,4 +1,4 @@
-package com.leo.enchants.mixin.client;
+package com.leo.enchants.accessor.client;
 
 /**
  * Interface for accessing missile mode data from creeper render state.
@@ -13,3 +13,4 @@ public interface MissileCreeperRenderStateAccessor {
     
     float leo_enchants$getMissilePitch();
 }
+

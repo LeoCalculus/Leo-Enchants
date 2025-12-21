@@ -1,5 +1,6 @@
 package com.leo.enchants.mixin.client;
 
+import com.leo.enchants.accessor.client.MissileCreeperRenderStateAccessor;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
