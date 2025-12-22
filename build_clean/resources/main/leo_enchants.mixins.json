@@ -8,6 +8,7 @@
         "BowItemMixin",
         "CreeperEntityMixin",
         "CreeperMissileDataMixin",
+        "EnderDragonEntityMixin",
         "EntityMixin",
         "FishingBobberEntityMixin",
         "FishingRodItemMixin",

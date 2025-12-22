@@ -15,6 +15,9 @@
     "com/leo/enchants/mixin/CreeperMissileDataMixin": {
       "initDataTracker": "Lnet/minecraft/class_1548;method_5693(Lnet/minecraft/class_2945$class_9222;)V"
     },
+    "com/leo/enchants/mixin/EnderDragonEntityMixin": {
+      "updatePostDeath": "Lnet/minecraft/class_1510;method_6108()V"
+    },
     "com/leo/enchants/mixin/EntityMixin": {
       "getDimensions": "Lnet/minecraft/class_1297;method_18377(Lnet/minecraft/class_4050;)Lnet/minecraft/class_4048;"
     },
@@ -74,6 +77,9 @@
       },
       "com/leo/enchants/mixin/CreeperMissileDataMixin": {
         "initDataTracker": "Lnet/minecraft/class_1548;method_5693(Lnet/minecraft/class_2945$class_9222;)V"
+      },
+      "com/leo/enchants/mixin/EnderDragonEntityMixin": {
+        "updatePostDeath": "Lnet/minecraft/class_1510;method_6108()V"
       },
       "com/leo/enchants/mixin/EntityMixin": {
         "getDimensions": "Lnet/minecraft/class_1297;method_18377(Lnet/minecraft/class_4050;)Lnet/minecraft/class_4048;"

@@ -42,6 +42,16 @@ public class ModEntities {
         Identifier.of(LeoEnchantsMod.MOD_ID, "space_travel_portal")
     );
     
+    public static final RegistryKey<EntityType<?>> HEROBRINE_KEY = RegistryKey.of(
+        RegistryKeys.ENTITY_TYPE,
+        Identifier.of(LeoEnchantsMod.MOD_ID, "herobrine")
+    );
+    
+    public static final RegistryKey<EntityType<?>> HEROBRINE_OBSIDIAN_KEY = RegistryKey.of(
+        RegistryKeys.ENTITY_TYPE,
+        Identifier.of(LeoEnchantsMod.MOD_ID, "herobrine_obsidian")
+    );
+    
     public static final EntityType<GiantSwordEntity> GIANT_SWORD = Registry.register(
         Registries.ENTITY_TYPE,
         GIANT_SWORD_KEY,
@@ -112,6 +122,26 @@ public class ModEntities {
             .build(SPACE_TRAVEL_PORTAL_KEY)
     );
     
+    public static final EntityType<HerobrineEntity> HEROBRINE = Registry.register(
+        Registries.ENTITY_TYPE,
+        HEROBRINE_KEY,
+        EntityType.Builder.<HerobrineEntity>create(HerobrineEntity::new, SpawnGroup.MONSTER)
+            .dimensions(0.6f, 1.95f) // Player-sized
+            .maxTrackingRange(256)
+            .trackingTickInterval(1)
+            .build(HEROBRINE_KEY)
+    );
+    
+    public static final EntityType<HerobrineObsidianEntity> HEROBRINE_OBSIDIAN = Registry.register(
+        Registries.ENTITY_TYPE,
+        HEROBRINE_OBSIDIAN_KEY,
+        EntityType.Builder.<HerobrineObsidianEntity>create(HerobrineObsidianEntity::new, SpawnGroup.MISC)
+            .dimensions(0.8f, 0.8f)
+            .maxTrackingRange(128)
+            .trackingTickInterval(1)
+            .build(HEROBRINE_OBSIDIAN_KEY)
+    );
+    
     public static void register() {
         LeoEnchantsMod.LOGGER.info("Registering Giant Sword Entity for " + LeoEnchantsMod.MOD_ID);
         // Register shadow clone with proper living entity attributes
@@ -122,5 +152,10 @@ public class ModEntities {
         LeoEnchantsMod.LOGGER.info("Registering Obsidian Strike Entity for " + LeoEnchantsMod.MOD_ID);
         LeoEnchantsMod.LOGGER.info("Registering Mirror Barrier Entity for " + LeoEnchantsMod.MOD_ID);
         LeoEnchantsMod.LOGGER.info("Registering Space Travel Portal Entity for " + LeoEnchantsMod.MOD_ID);
+        
+        // Register Herobrine boss entity with attributes
+        FabricDefaultAttributeRegistry.register(HEROBRINE, HerobrineEntity.createHerobrineAttributes());
+        LeoEnchantsMod.LOGGER.info("Registering Herobrine Boss Entity for " + LeoEnchantsMod.MOD_ID);
+        LeoEnchantsMod.LOGGER.info("Registering Herobrine Obsidian Entity for " + LeoEnchantsMod.MOD_ID);
     }
 }
