@@ -3,6 +3,7 @@ package com.leo.enchants;
 import com.leo.enchants.client.DigitDisintegrationRenderer;
 import com.leo.enchants.client.GiantSwordEntityRenderer;
 import com.leo.enchants.client.HerobrineObsidianRenderer;
+import com.leo.enchants.client.HerobrineGlitchOverlay;
 import com.leo.enchants.client.HerobrineRenderer;
 import com.leo.enchants.client.MirrorBarrierRenderer;
 import com.leo.enchants.client.ObsidianBridgeRenderer;
@@ -15,6 +16,7 @@ import com.leo.enchants.logic.StrafeHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 
 public class LeoEnchantsModClient implements ClientModInitializer {
     
@@ -32,6 +34,9 @@ public class LeoEnchantsModClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.SPACE_TRAVEL_PORTAL, SpaceTravelPortalRenderer::new);
         EntityRendererRegistry.register(ModEntities.HEROBRINE, HerobrineRenderer::new);
         EntityRendererRegistry.register(ModEntities.HEROBRINE_OBSIDIAN, HerobrineObsidianRenderer::new);
+        
+        // Register HUD overlays
+        HudRenderCallback.EVENT.register(new HerobrineGlitchOverlay());
         
         // Register client tick events for enchantment handling
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

@@ -1,6 +1,7 @@
 package com.leo.enchants.entity;
 
 import com.leo.enchants.LeoEnchantsMod;
+import com.leo.enchants.accessor.PlayerHitboxAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -20,6 +21,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -78,8 +80,8 @@ public class HerobrineEntity extends HostileEntity {
     private static final int FATAL_STRIKE_MAX_COOLDOWN = 900; // 45 seconds
     
     // Phase 3 cooldowns
-    private static final int EVAPORATION_MIN_COOLDOWN = 200; // 10 seconds
-    private static final int EVAPORATION_MAX_COOLDOWN = 600; // 30 seconds
+    private static final int EVAPORATION_MIN_COOLDOWN = 100; // 5 seconds
+    private static final int EVAPORATION_MAX_COOLDOWN = 200; // 10 seconds
     private static final int INVENTORY_SHUFFLE_COOLDOWN = 100; // 5 seconds
     private static final int SCREEN_GLITCH_COOLDOWN = 40; // 2 seconds
     private static final int ENTITY_DISSOLUTION_INTERVAL = 40; // 2 seconds
@@ -328,9 +330,10 @@ public class HerobrineEntity extends HostileEntity {
             
             // Final death
             if (deathAnimationTicks >= DEATH_ANIMATION_DURATION) {
-                // Reset gravity for all players
+                // Reset gravity and scale for all players
                 for (PlayerEntity player : world.getPlayers()) {
                     resetPlayerGravity((ServerPlayerEntity) player);
+                    resetPlayerScale((ServerPlayerEntity) player);
                 }
                 
                 // Massive final explosion of particles
@@ -458,6 +461,7 @@ public class HerobrineEntity extends HostileEntity {
         if (!anyValidPlayer) {
             for (PlayerEntity player : world.getPlayers()) {
                 resetPlayerGravity((ServerPlayerEntity) player);
+                resetPlayerScale((ServerPlayerEntity) player);
             }
             
             world.spawnParticles(ParticleTypes.LARGE_SMOKE, getX(), getY(), getZ(), 50, 0.5, 1, 0.5, 0.1);
@@ -467,6 +471,7 @@ public class HerobrineEntity extends HostileEntity {
     }
     
     private void handleTeleportation(ServerWorld world) {
+        if (getSwordSwingTicks() > 0 || getIsSkyAttack()) return; // Don't teleport during attack
         if (teleportCooldown <= 0 && currentTarget != null) {
             performRandomTeleport(world);
             teleportCooldown = MIN_TELEPORT_INTERVAL + random.nextInt(MAX_TELEPORT_INTERVAL - MIN_TELEPORT_INTERVAL);
@@ -621,11 +626,12 @@ public class HerobrineEntity extends HostileEntity {
         
         if (gravityChangeCooldown <= 0) {
             manipulateGravityAttribute(world);
+            manipulatePlayerScale(world);
             gravityChangeCooldown = GRAVITY_CHANGE_INTERVAL;
         }
         
         if (blockCorruptionCooldown <= 0) {
-            corruptNearbyBlocks(world);
+            applyPlayerCorruptionEffects(world);
             blockCorruptionCooldown = BLOCK_CORRUPTION_INTERVAL;
         }
         
@@ -651,9 +657,10 @@ public class HerobrineEntity extends HostileEntity {
         
         double distanceToTarget = this.distanceTo(currentTarget);
         
-        // Reset gravity for all players in Phase 3
+        // Reset gravity and scale for all players in Phase 3
         for (ServerPlayerEntity player : world.getPlayers()) {
             resetPlayerGravity(player);
+            resetPlayerScale(player);
         }
         
         // Obsidian attack - faster
@@ -662,10 +669,10 @@ public class HerobrineEntity extends HostileEntity {
             obsidianCooldown = OBSIDIAN_ATTACK_COOLDOWN / 2;
         }
         
-        // Sky Sword Attack - faster
-        if (skySwordCooldown <= 0 && getSwordSwingTicks() <= 0 && !getIsSkyAttack() && distanceToTarget < 30) {
-            performSkySwordAttack(world, currentTarget);
-            skySwordCooldown = SKY_SWORD_ATTACK_COOLDOWN / 2;
+        // Hand Lightning Attack (Replaced Sky Sword in Phase 3)
+        if (skySwordCooldown <= 0 && distanceToTarget < 30) {
+            performHandLightningAttack(world, currentTarget);
+            skySwordCooldown = 80; // 4 seconds cooldown
         }
         
         // Force field - stronger
@@ -706,19 +713,19 @@ public class HerobrineEntity extends HostileEntity {
     }
     
     /**
-     * Evaporate blocks with enchant particle effect (lightweight 1s and 0s visual)
-     * Only removes 5-15 random blocks to prevent lag
+     * Evaporate blocks with de-enchant visual effect
+     * Blocks within 10-block radius of player are vaporized
      */
     private void evaporateBlocksIntoBinary(ServerWorld world) {
         for (ServerPlayerEntity player : world.getPlayers()) {
             if (player.isCreative() || player.isSpectator()) continue;
             if (player.distanceTo(this) > 50) continue;
             
-            int radius = 6;
+            int radius = 10;
             List<BlockPos> validBlocks = new ArrayList<>();
             
             BlockPos playerPos = player.getBlockPos();
-            // Find valid blocks
+            // Find valid blocks within radius
             for (int x = -radius; x <= radius; x++) {
                 for (int y = -radius; y <= radius; y++) {
                     for (int z = -radius; z <= radius; z++) {
@@ -726,7 +733,9 @@ public class HerobrineEntity extends HostileEntity {
                         double distance = Math.sqrt(x*x + y*y + z*z);
                         
                         if (distance <= radius && !world.getBlockState(pos).isAir()) {
-                            if (world.getBlockState(pos).getHardness(world, pos) >= 0) {
+                            BlockState state = world.getBlockState(pos);
+                            // Skip bedrock and unbreakable blocks
+                            if (state.getHardness(world, pos) >= 0 && state.getHardness(world, pos) < 50) {
                                 validBlocks.add(pos);
                             }
                         }
@@ -734,80 +743,48 @@ public class HerobrineEntity extends HostileEntity {
                 }
             }
             
-            // Only remove 5-15 random blocks to prevent lag
-            int blocksToRemove = Math.min(validBlocks.size(), 5 + random.nextInt(11));
+            // Remove 15-30 random blocks for more dramatic effect
+            int blocksToRemove = Math.min(validBlocks.size(), 15 + random.nextInt(16));
             Collections.shuffle(validBlocks);
             
             for (int i = 0; i < blocksToRemove; i++) {
                 BlockPos pos = validBlocks.get(i);
+                BlockState oldState = world.getBlockState(pos);
+                
+                // Spawn de-enchant visual effect (block particle breaking + enchant letters floating up)
+                world.spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, oldState),
+                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                    10, 0.3, 0.3, 0.3, 0.05);
+                
+                // Enchant particles (floating letters rising) - like de-enchant effect
+                world.spawnParticles(ParticleTypes.ENCHANT,
+                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                    30, 0.3, 0.3, 0.3, 1.0);
+                
+                // Purple/magic particles for the de-enchant feel
+                world.spawnParticles(ParticleTypes.WITCH,
+                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                    5, 0.2, 0.2, 0.2, 0.02);
                 
                 // Remove the block
                 world.setBlockState(pos, Blocks.AIR.getDefaultState());
-                
-                // Use ENCHANT particles - looks like floating symbols/letters (1s and 0s effect)
-                // These rise up naturally like the enchanting table effect
-                world.spawnParticles(ParticleTypes.ENCHANT,
-                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                    15, 0.4, 0.4, 0.4, 0.5);
-                
-                // Add some end rod particles for the "digital" dissolve effect
-                world.spawnParticles(ParticleTypes.END_ROD,
-                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                    3, 0.2, 0.2, 0.2, 0.1);
             }
             
             if (blocksToRemove > 0) {
+                world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.HOSTILE, 1.5f, 0.5f);
                 world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.HOSTILE, 1.0f, 2.0f);
+                player.sendMessage(Text.literal("§5§l✧ Reality is dissolving around you..."), true);
             }
         }
     }
     
     /**
-     * Apply red screen glitch effect - visual only, no actual blocks
+     * Apply red screen glitch effect - now handled by client-side overlay
      */
     private void applyScreenGlitchEffect(ServerWorld world) {
-        // Red dust particles for the "hacked" visual effect
-        DustParticleEffect redDust = new DustParticleEffect(0xFF0000, 2.0f);
-        
         for (ServerPlayerEntity player : world.getPlayers()) {
             if (player.isCreative() || player.isSpectator()) continue;
             if (player.distanceTo(this) > 50) continue;
-            
-            Vec3d look = player.getRotationVector();
-            Vec3d right = look.crossProduct(new Vec3d(0, 1, 0)).normalize();
-            Vec3d up = right.crossProduct(look).normalize();
-            
-            // Spawn red particles in front of player's face (screen glitch effect)
-            for (int i = 0; i < 15; i++) {
-                double distance = 1.5 + random.nextDouble() * 0.5;
-                double xOffset = (random.nextDouble() - 0.5) * 2;
-                double yOffset = (random.nextDouble() - 0.5) * 1.5;
-                
-                Vec3d particlePos = player.getEyePos()
-                    .add(look.multiply(distance))
-                    .add(right.multiply(xOffset))
-                    .add(up.multiply(yOffset));
-                
-                // Red glitch particles
-                world.spawnParticles(redDust,
-                    particlePos.x, particlePos.y, particlePos.z,
-                    1, 0.1, 0.1, 0.1, 0);
-            }
-            
-            // Additional red particle bursts at random screen positions
-            for (int i = 0; i < 5; i++) {
-                double distance = 2 + random.nextDouble() * 2;
-                double angle = random.nextDouble() * Math.PI * 2;
-                
-                Vec3d burstPos = player.getEyePos()
-                    .add(look.multiply(distance))
-                    .add(right.multiply(Math.cos(angle) * 1.5))
-                    .add(up.multiply(Math.sin(angle) * 1.5));
-                
-                world.spawnParticles(redDust,
-                    burstPos.x, burstPos.y, burstPos.z,
-                    3, 0.2, 0.2, 0.2, 0);
-            }
             
             // Brief damage flash for red vignette
             if (random.nextInt(3) == 0) {
@@ -880,8 +857,54 @@ public class HerobrineEntity extends HostileEntity {
         }
     }
     
+    private void performHandLightningAttack(ServerWorld world, LivingEntity target) {
+        if (target == null) return;
+        
+        // 1. Play sound effects
+        world.playSound(null, getBlockPos(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.HOSTILE, 1.5f, 1.2f);
+        world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.HOSTILE, 1.0f, 1.0f);
+        
+        // 2. Spawn actual lightning bolt entity at target location for visual effect
+        LightningEntity lightning = EntityType.LIGHTNING_BOLT.create(world, SpawnReason.TRIGGERED);
+        if (lightning != null) {
+            lightning.setPosition(target.getX(), target.getY(), target.getZ());
+            lightning.setCosmetic(true); // Cosmetic only - we handle damage ourselves
+            world.spawnEntity(lightning);
+        }
+        
+        // 3. Visual: White/yellow beam particles from hand to player
+        Vec3d start = getPos().add(0, 1.5, 0); // Approx. hand position
+        Vec3d end = target.getPos().add(0, target.getHeight() / 2, 0);
+        Vec3d direction = end.subtract(start);
+        double distance = direction.length();
+        direction = direction.normalize();
+        
+        for (double d = 0; d < distance; d += 0.3) {
+            Vec3d pos = start.add(direction.multiply(d));
+            // White flash particles for lightning beam
+            world.spawnParticles(ParticleTypes.FLASH, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
+            world.spawnParticles(ParticleTypes.END_ROD, pos.x, pos.y, pos.z, 2, 0.1, 0.1, 0.1, 0.02);
+        }
+        
+        // 4. Apply 30% health damage (ignoring armor) - uses MAGIC which bypasses armor
+        if (target instanceof ServerPlayerEntity player) {
+            float damageAmount = player.getMaxHealth() * 0.3f;
+            player.damage(world, world.getDamageSources().magic(), damageAmount);
+            player.sendMessage(Text.literal("§e§l⚡ Herobrine struck you with lightning!"), true);
+        }
+    }
+    
     private void performSkySwordAttack(ServerWorld world, LivingEntity target) {
-        skyAttackStartPos = new Vec3d(target.getX(), target.getY() + SKY_ATTACK_HEIGHT, target.getZ());
+        // Position Herobrine at a 45-degree angle from the player
+        // Horizontal distance = height offset = 15 blocks
+        double distance = 15.0;
+        double angle = random.nextDouble() * Math.PI * 2;
+        
+        double offsetX = Math.cos(angle) * distance;
+        double offsetZ = Math.sin(angle) * distance;
+        double targetY = target.getY() + distance; // 45 degree angle means height = horizontal distance
+
+        skyAttackStartPos = new Vec3d(target.getX() + offsetX, targetY, target.getZ() + offsetZ);
         
         world.spawnParticles(ParticleTypes.LARGE_SMOKE, getX(), getY(), getZ(), 30, 0.5, 1, 0.5, 0.1);
         world.playSound(null, getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.5f, 0.3f);
@@ -894,19 +917,22 @@ public class HerobrineEntity extends HostileEntity {
         setSwordSwingTicks(SKY_SWORD_SWING_DURATION);
         attackAnimationTicks = SKY_SWORD_SWING_DURATION;
         
+        // Face the player
+        this.lookAtEntity(target, 180.0f, 90.0f);
+        
         swordSwingDirection = target.getPos().subtract(getPos()).normalize();
         
         world.playSound(null, getBlockPos(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.HOSTILE, 2.0f, 0.5f);
         world.playSound(null, getBlockPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.HOSTILE, 1.0f, 0.3f);
         
         for (int i = 0; i < 20; i++) {
-            double angle = (2 * Math.PI / 20) * i;
+            double a = (2 * Math.PI / 20) * i;
             double radius = 4;
             world.spawnParticles(
                 ParticleTypes.SOUL_FIRE_FLAME,
-                target.getX() + Math.cos(angle) * radius,
+                target.getX() + Math.cos(a) * radius,
                 target.getY() + 0.1,
-                target.getZ() + Math.sin(angle) * radius,
+                target.getZ() + Math.sin(a) * radius,
                 2, 0, 0.1, 0, 0.02);
         }
     }
@@ -988,33 +1014,57 @@ public class HerobrineEntity extends HostileEntity {
         playerGravityModifier.remove(player.getUuid());
     }
     
-    private void corruptNearbyBlocks(ServerWorld world) {
+    private void manipulatePlayerScale(ServerWorld world) {
+        for (ServerPlayerEntity player : world.getPlayers()) {
+            if (player.isCreative() || player.isSpectator()) continue;
+            if (player.distanceTo(this) > 50) {
+                resetPlayerScale(player);
+                continue;
+            }
+            
+            if (player instanceof PlayerHitboxAccessor accessor) {
+                if (accessor.leo_enchants$getHitboxScale() < 5.0f) {
+                    accessor.leo_enchants$setHitboxScale(5.0f);
+                    player.sendMessage(Text.literal("§c§l⚠ Hitbox magnified!"), true);
+                }
+            }
+        }
+    }
+    
+    private void resetPlayerScale(ServerPlayerEntity player) {
+        if (player instanceof PlayerHitboxAccessor accessor) {
+            if (accessor.leo_enchants$getHitboxScale() > 1.0f) {
+                accessor.leo_enchants$setHitboxScale(1.0f);
+            }
+        }
+    }
+    
+    private void applyPlayerCorruptionEffects(ServerWorld world) {
         for (ServerPlayerEntity player : world.getPlayers()) {
             if (player.isCreative() || player.isSpectator()) continue;
             if (player.distanceTo(this) > 30) continue;
             
-            int range = 3;
-            int x = (int) player.getX() + random.nextInt(range * 2 + 1) - range;
-            int y = (int) player.getY() + random.nextInt(3) - 1;
-            int z = (int) player.getZ() + random.nextInt(range * 2 + 1) - range;
-            
-            BlockPos pos = new BlockPos(x, y, z);
-            BlockState currentState = world.getBlockState(pos);
-            
-            if (currentState.isAir() || currentState.isReplaceable()) {
-                int blockType = random.nextInt(5);
-                BlockState newState = switch (blockType) {
-                    case 0 -> Blocks.FIRE.getDefaultState();
-                    case 1 -> Blocks.SOUL_FIRE.getDefaultState();
-                    case 2 -> Blocks.MAGMA_BLOCK.getDefaultState();
-                    case 3 -> Blocks.COBWEB.getDefaultState();
-                    case 4 -> Blocks.POWDER_SNOW.getDefaultState();
-                    default -> null;
-                };
-                
-                if (newState != null) {
-                    world.setBlockState(pos, newState);
-                    world.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, x + 0.5, y + 0.5, z + 0.5, 5, 0.2, 0.2, 0.2, 0.02);
+            int effectType = random.nextInt(3);
+            switch (effectType) {
+                case 0 -> { // Frozen
+                    player.setFrozenTicks(200); // 10 seconds of freezing
+                    player.damage(world, world.getDamageSources().freeze(), 2.0f);
+                    world.spawnParticles(ParticleTypes.SNOWFLAKE, player.getX(), player.getY() + 1, player.getZ(), 10, 0.3, 0.5, 0.3, 0.05);
+                    player.sendMessage(Text.literal("§b§l❄ YOU ARE FREEZING"), true);
+                }
+                case 1 -> { // Fire
+                    player.setOnFireFor(5); // 5 seconds of fire
+                    player.damage(world, world.getDamageSources().onFire(), 2.0f);
+                    world.spawnParticles(ParticleTypes.FLAME, player.getX(), player.getY() + 1, player.getZ(), 10, 0.3, 0.5, 0.3, 0.05);
+                    player.sendMessage(Text.literal("§c§l🔥 EVERYTHING BURNS"), true);
+                }
+                case 2 -> { // Sudden Stop
+                    player.setVelocity(0, 0, 0);
+                    player.velocityDirty = true;
+                    player.velocityModified = true;
+                    world.spawnParticles(ParticleTypes.PORTAL, player.getX(), player.getY() + 1, player.getZ(), 20, 0.2, 0.4, 0.2, 0.1);
+                    world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.HOSTILE, 1.0f, 0.5f);
+                    player.sendMessage(Text.literal("§5§l🛑 MOTION HALTED"), true);
                 }
             }
         }
@@ -1270,6 +1320,13 @@ public class HerobrineEntity extends HostileEntity {
             }
         }
         
+        // Reset Phase 3 cooldowns immediately when entering Phase 3
+        if (newPhase == 3) {
+            this.evaporationCooldown = 0; // Start dissolving blocks immediately
+            this.screenGlitchCooldown = 0;
+            this.inventoryShuffleCooldown = 0;
+        }
+        
         LeoEnchantsMod.LOGGER.info("Herobrine transitioned to Phase {}", newPhase);
     }
     
@@ -1284,6 +1341,7 @@ public class HerobrineEntity extends HostileEntity {
         super.onStoppedTrackingBy(player);
         this.bossBar.removePlayer(player);
         resetPlayerGravity(player);
+        resetPlayerScale(player);
     }
     
     @Override

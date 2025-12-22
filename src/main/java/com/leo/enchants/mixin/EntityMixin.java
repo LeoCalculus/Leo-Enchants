@@ -20,6 +20,7 @@ public abstract class EntityMixin {
     private void modifyDimensionsForMagnify(net.minecraft.entity.EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
         Entity self = (Entity) (Object) this;
         
+        // Only handle magnified arrows here - player hitbox is handled in PlayerEntityMixin
         if (self instanceof PersistentProjectileEntity && self instanceof MagnifyArrowAccessor accessor) {
             float scale = accessor.leo_enchants$getMagnifyScale();
             if (scale > 1.0f) {

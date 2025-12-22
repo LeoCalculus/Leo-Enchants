@@ -39,6 +39,9 @@
     "com/leo/enchants/mixin/PersistentProjectileEntityMixin": {
       "initDataTracker": "Lnet/minecraft/class_1665;method_5693(Lnet/minecraft/class_2945$class_9222;)V"
     },
+    "com/leo/enchants/mixin/PlayerEntityMixin": {
+      "tick": "Lnet/minecraft/class_1657;method_5773()V"
+    },
     "com/leo/enchants/mixin/SkeletonEntityMixin": {
       "shootAt": "Lnet/minecraft/class_1547;method_7105(Lnet/minecraft/class_1309;F)V"
     },
@@ -101,6 +104,9 @@
       },
       "com/leo/enchants/mixin/PersistentProjectileEntityMixin": {
         "initDataTracker": "Lnet/minecraft/class_1665;method_5693(Lnet/minecraft/class_2945$class_9222;)V"
+      },
+      "com/leo/enchants/mixin/PlayerEntityMixin": {
+        "tick": "Lnet/minecraft/class_1657;method_5773()V"
       },
       "com/leo/enchants/mixin/SkeletonEntityMixin": {
         "shootAt": "Lnet/minecraft/class_1547;method_7105(Lnet/minecraft/class_1309;F)V"

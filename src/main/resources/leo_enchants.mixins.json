@@ -15,6 +15,7 @@
         "HeavyArrowMixin",
         "LivingEntityMixin",
         "PersistentProjectileEntityMixin",
+        "PlayerEntityMixin",
         "SkeletonEntityMixin",
         "ZombieEntityMixin"
     ],
